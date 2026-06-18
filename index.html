@@ -3,10 +3,969 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой первый сайт</title>
+    <title>Арома тест — диагностика для духов</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', 'Playfair Display', system-ui, sans-serif;
+            background: linear-gradient(135deg, #fdf6f0 0%, #fce4e0 40%, #f8d5d0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+        .card {
+            max-width: 860px;
+            width: 100%;
+            background: rgba(255, 250, 247, 0.92);
+            backdrop-filter: blur(8px);
+            border-radius: 48px 48px 40px 40px;
+            box-shadow: 0 20px 60px rgba(200, 120, 140, 0.3), 0 0 0 1px rgba(255, 215, 215, 0.4);
+            padding: 2.4rem 2.8rem;
+            transition: 0.2s;
+            border: 1px solid #ffe2da;
+        }
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 0.2rem;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #b34a6e, #d47b9b, #e89ab0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 12px rgba(200, 80, 120, 0.15);
+        }
+        h1 small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #b07a8a;
+            -webkit-text-fill-color: #b07a8a;
+            background: none;
+            margin-left: auto;
+            letter-spacing: 0.3px;
+            background: rgba(255, 220, 220, 0.5);
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid #ffd6cc;
+        }
+        .subhead {
+            color: #7a4d5e;
+            border-left: 4px solid #f5a3b9;
+            padding-left: 1.2rem;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            background: linear-gradient(90deg, rgba(255, 235, 230, 0.7), rgba(255, 220, 220, 0.3));
+            border-radius: 0 30px 30px 0;
+            line-height: 1.6;
+            padding: 0.7rem 1.5rem;
+            font-size: 1.05rem;
+            backdrop-filter: blur(4px);
+            border: 1px solid #ffd9cf;
+            border-left-width: 6px;
+        }
+        .subhead span {
+            font-weight: 500;
+            color: #b34a6e;
+        }
+        .user-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+            padding: 1.2rem 1.5rem;
+            background: linear-gradient(135deg, rgba(255, 248, 245, 0.7), rgba(255, 235, 230, 0.5));
+            border-radius: 28px;
+            border: 1px solid #ffd9cf;
+            box-shadow: inset 0 2px 8px rgba(255, 200, 200, 0.1);
+        }
+        .user-info label {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-weight: 500;
+            color: #4d2a3a;
+            font-size: 0.95rem;
+            flex: 1;
+            min-width: 150px;
+        }
+        .user-info input {
+            padding: 0.6rem 1rem;
+            border-radius: 40px;
+            border: 1px solid #fad7cd;
+            background: rgba(255, 248, 245, 0.8);
+            font-size: 1rem;
+            font-family: inherit;
+            color: #3f2933;
+            transition: 0.2s;
+            outline: none;
+        }
+        .user-info input:focus {
+            border-color: #d47b9b;
+            box-shadow: 0 0 0 3px rgba(212, 123, 155, 0.2);
+        }
+        .question-box {
+            background: linear-gradient(135deg, rgba(255, 248, 245, 0.8), rgba(255, 240, 235, 0.6));
+            backdrop-filter: blur(4px);
+            border-radius: 32px;
+            padding: 1.8rem 2rem 2rem 2rem;
+            margin-bottom: 1.8rem;
+            border: 1px solid #ffd9cf;
+            box-shadow: 0 6px 20px rgba(200, 130, 140, 0.08);
+            transition: 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .question-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(245, 163, 185, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .q-text {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #4d2a3a;
+            margin-bottom: 1.4rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+            font-family: 'Playfair Display', serif;
+        }
+        .q-number {
+            background: linear-gradient(135deg, #fce1da, #f8d0c8);
+            color: #7a3d54;
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            letter-spacing: 0.4px;
+            border: 1px solid #fbc0b3;
+        }
+        .q-hint {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: #b07a8a;
+            font-family: 'Segoe UI', sans-serif;
+            margin-left: auto;
+            background: rgba(255, 220, 220, 0.3);
+            padding: 0.1rem 0.8rem;
+            border-radius: 40px;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.7rem 1.2rem;
+        }
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1rem;
+            color: #3f2933;
+            cursor: pointer;
+            padding: 0.5rem 0.9rem 0.5rem 0.6rem;
+            border-radius: 60px;
+            transition: 0.15s ease;
+            background: rgba(255, 240, 235, 0.5);
+            border: 1px solid #fad7cd;
+            font-weight: 450;
+            letter-spacing: 0.2px;
+        }
+        .options label:hover {
+            background: linear-gradient(135deg, #ffede8, #ffe0d8);
+            border-color: #f5a3b9;
+            transform: scale(1.02);
+            box-shadow: 0 2px 12px rgba(200, 100, 120, 0.1);
+        }
+        .options input[type="checkbox"] {
+            accent-color: #d47b9b;
+            width: 1.1rem;
+            height: 1.1rem;
+            flex-shrink: 0;
+            margin: 0;
+            cursor: pointer;
+            filter: drop-shadow(0 1px 2px rgba(180, 80, 100, 0.2));
+        }
+        .options input[type="radio"] {
+            accent-color: #d47b9b;
+            width: 1.1rem;
+            height: 1.1rem;
+            flex-shrink: 0;
+            margin: 0;
+            cursor: pointer;
+            filter: drop-shadow(0 1px 2px rgba(180, 80, 100, 0.2));
+        }
+        .options label:has(input:checked) {
+            background: linear-gradient(135deg, #ffdcd2, #fccfc4);
+            border-color: #d47b9b;
+            font-weight: 500;
+            box-shadow: 0 4px 14px rgba(212, 123, 155, 0.2);
+            border-width: 1.5px;
+        }
+        .result-area {
+            margin-top: 2rem;
+            border-top: 2px dashed #f5c9c0;
+            padding-top: 1.8rem;
+            background: linear-gradient(180deg, rgba(255, 248, 245, 0.3), transparent);
+            border-radius: 0 0 32px 32px;
+        }
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .result-header h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #6b2e4a;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #b34a6e, #d47b9b, #e89ab0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .result-header .badge {
+            background: linear-gradient(135deg, #fce1da, #f8d0c8);
+            padding: 0.25rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            color: #7a3d54;
+            font-weight: 500;
+            border: 1px solid #fbc0b3;
+            letter-spacing: 0.3px;
+        }
+        .result-content {
+            background: linear-gradient(135deg, rgba(255, 245, 240, 0.7), rgba(255, 235, 230, 0.5));
+            backdrop-filter: blur(4px);
+            padding: 1.6rem 2rem;
+            border-radius: 28px;
+            border: 1px solid #ffd9cf;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #3a2330;
+            min-height: 5rem;
+            box-shadow: inset 0 2px 8px rgba(255, 200, 200, 0.05);
+        }
+        .result-content .empty-message {
+            color: #b07a8a;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .result-content .answer-line {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(200, 130, 140, 0.12);
+            display: flex;
+            align-items: baseline;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .result-content .answer-line:last-child {
+            border-bottom: none;
+        }
+        .answer-line strong {
+            font-weight: 600;
+            color: #6b2e4a;
+            min-width: 9rem;
+            font-size: 0.95rem;
+        }
+        .answer-line .ans-value {
+            background: linear-gradient(135deg, #ffede8, #ffe0d8);
+            padding: 0.1rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #8f4a64;
+            border: 1px solid #fad7cd;
+            font-size: 0.95rem;
+            margin: 0.15rem 0;
+            box-shadow: 0 1px 4px rgba(200, 100, 120, 0.05);
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.2rem;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+        .btn {
+            background: transparent;
+            border: 1px solid #f5c9c0;
+            color: #7a4d5e;
+            padding: 0.5rem 1.8rem;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(4px);
+            background: rgba(255, 248, 245, 0.3);
+            letter-spacing: 0.3px;
+        }
+        .btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #ffded5, #fccfc4);
+            border-color: #d47b9b;
+            box-shadow: 0 4px 16px rgba(200, 100, 120, 0.15);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #d47b9b, #c06586);
+            border-color: #d47b9b;
+            color: white;
+        }
+        .btn-success:hover:not(:disabled) {
+            background: linear-gradient(135deg, #c06586, #a85472);
+            border-color: #c06586;
+            box-shadow: 0 6px 20px rgba(212, 123, 155, 0.35);
+        }
+        .flower-icon {
+            display: inline-block;
+            filter: drop-shadow(0 2px 4px rgba(200, 100, 120, 0.2));
+        }
+        .error-msg {
+            color: #c0395a;
+            font-size: 0.85rem;
+            margin-top: 0.4rem;
+            display: none;
+            background: rgba(255, 200, 200, 0.2);
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            border: 1px solid #f5b0b0;
+        }
+        .error-msg.show {
+            display: block;
+        }
+        .q2-group {
+            margin-bottom: 0.8rem;
+            padding: 0.8rem 0.8rem 0.4rem 0.8rem;
+            background: linear-gradient(135deg, rgba(255, 245, 240, 0.6), rgba(255, 235, 230, 0.4));
+            border-radius: 20px;
+            border-left: 4px solid #f5a3b9;
+            box-shadow: inset 0 1px 4px rgba(255, 200, 200, 0.1);
+        }
+        .q2-group .q-text {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            color: #5a3a4a;
+        }
+        .q2-group .options {
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        }
+        .q2-group .options label {
+            background: rgba(255, 248, 245, 0.5);
+        }
+        .q2-group .options label:has(input:checked) {
+            background: linear-gradient(135deg, #ffdcd2, #fccfc4);
+        }
+        @media (max-width: 580px) {
+            .card { padding: 1.6rem; }
+            .question-box { padding: 1.2rem; }
+            .options { grid-template-columns: 1fr; }
+            .q-text { font-size: 1.2rem; }
+            h1 { font-size: 2.2rem; }
+            .action-buttons { flex-direction: column; align-items: stretch; }
+            .btn { justify-content: center; }
+            .user-info { flex-direction: column; gap: 0.8rem; }
+            .q2-group .options { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Привет, мир!</h1>
-    <p>Это мой сайт на GitHub Pages</p>
+<div class="card" id="app">
+    <h1>
+        <span class="flower-icon">🌸</span> Арома тест
+        <small>диагностика для духов</small>
+    </h1>
+    <div class="subhead">
+        <span>✨</span> Ответь на вопросы, чтобы мы подобрали идеальную композицию из масел doTERRA.
+    </div>
+
+    <!-- Информация о пользователе -->
+    <div class="user-info">
+        <label>
+            Ваше имя
+            <input type="text" id="userName" placeholder="Например: Анна" value="">
+        </label>
+        <label>
+            Ваш город
+            <input type="text" id="userCity" placeholder="Например: Москва" value="">
+        </label>
+    </div>
+
+    <!-- Вопрос 1 -->
+    <div class="question-box" id="q1-box">
+        <div class="q-text">
+            <span class="q-number">Вопрос 1</span>
+            <span>Что бы ты хотела <strong>больше</strong>?</span>
+            <span class="q-hint">(выбери до 2)</span>
+        </div>
+        <div class="options" id="q1-options">
+            <label><input type="checkbox" name="q1" value="1" data-next="q2-1"> 💖 Радость и лёгкость</label>
+            <label><input type="checkbox" name="q1" value="2" data-next="q2-2"> 🌿 Уверенность и силу</label>
+            <label><input type="checkbox" name="q1" value="3" data-next="q2-3"> 🌸 Нежность и романтику</label>
+            <label><input type="checkbox" name="q1" value="4" data-next="q2-4"> 🔥 Страсть и энергию</label>
+            <label><input type="checkbox" name="q1" value="5" data-next="q2-5"> ☮️ Спокойствие и гармонию</label>
+            <label><input type="checkbox" name="q1" value="6" data-next="q2-6"> 🌟 Вдохновение и творчество</label>
+            <label><input type="checkbox" name="q1" value="7" data-next="q2-7"> 🤗 Защиту и тепло</label>
+            <label><input type="checkbox" name="q1" value="8" data-next="q2-8"> 💎 Чистоту и свежесть</label>
+            <label><input type="checkbox" name="q1" value="9" data-next="q2-9"> 🌙 Глубину и мудрость</label>
+            <label><input type="checkbox" name="q1" value="10" data-next="q2-10"> ✨ Магию и тайну</label>
+        </div>
+        <div class="error-msg" id="q1-error">⚠️ Можно выбрать не более 2 вариантов</div>
+    </div>
+
+    <!-- Вопрос 2 -->
+    <div class="question-box" id="q2-box" style="display: none;">
+        <div class="q-text">
+            <span class="q-number">Вопрос 2</span>
+            <span>Уточнение вопроса 1</span>
+            <span class="q-hint">(выбери по одному из каждого блока)</span>
+        </div>
+        <div id="q2-container"></div>
+        <div class="error-msg" id="q2-error">⚠️ Выбери по одному ответу в каждом блоке</div>
+    </div>
+
+    <!-- Вопрос 3 -->
+    <div class="question-box" id="q3-box">
+        <div class="q-text">
+            <span class="q-number">Вопрос 3</span>
+            <span>Что бы ты хотела <strong>меньше</strong>?</span>
+            <span class="q-hint">(выбери до 2)</span>
+        </div>
+        <div class="options" id="q3-options">
+            <label><input type="checkbox" name="q3" value="11" data-next="q4-1"> 😰 Тревогу и беспокойство</label>
+            <label><input type="checkbox" name="q3" value="12" data-next="q4-2"> 😤 Раздражение и гнев</label>
+            <label><input type="checkbox" name="q3" value="13" data-next="q4-3"> 😔 Грусть и тоску</label>
+            <label><input type="checkbox" name="q3" value="14" data-next="q4-4"> 🥱 Усталость и апатию</label>
+            <label><input type="checkbox" name="q3" value="15" data-next="q4-5"> 😖 Стресс и напряжение</label>
+            <label><input type="checkbox" name="q3" value="16" data-next="q4-6"> 😐 Неуверенность и страх</label>
+            <label><input type="checkbox" name="q3" value="17" data-next="q4-7"> 🧊 Холод и отстранённость</label>
+            <label><input type="checkbox" name="q3" value="18" data-next="q4-8"> 🌫️ Путаницу и хаос</label>
+            <label><input type="checkbox" name="q3" value="19" data-next="q4-9"> ⚖️ Несправедливость</label>
+            <label><input type="checkbox" name="q3" value="20" data-next="q4-10"> 💔 Душевную боль</label>
+        </div>
+        <div class="error-msg" id="q3-error">⚠️ Можно выбрать не более 2 вариантов</div>
+    </div>
+
+    <!-- Вопрос 4 -->
+    <div class="question-box" id="q4-box" style="display: none;">
+        <div class="q-text">
+            <span class="q-number">Вопрос 4</span>
+            <span>Уточнение вопроса 3</span>
+            <span class="q-hint">(выбери по одному из каждого блока)</span>
+        </div>
+        <div id="q4-container"></div>
+        <div class="error-msg" id="q4-error">⚠️ Выбери по одному ответу в каждом блоке</div>
+    </div>
+
+    <!-- Результат -->
+    <div class="result-area">
+        <div class="result-header">
+            <h2>✨ Твой арома-профиль</h2>
+            <span class="badge">диагностика завершена</span>
+        </div>
+        <div class="result-content" id="resultDisplay">
+            <div class="empty-message">
+                <span>🌸</span> Ответь на все вопросы, чтобы увидеть результат.
+            </div>
+        </div>
+        <div class="action-buttons">
+            <button class="btn" id="resetBtn">⟳ Сбросить</button>
+            <button class="btn btn-success" id="saveTxtBtn" disabled>💾 Сохранить в TXT</button>
+        </div>
+        <div class="error-msg" id="save-error" style="margin-top: 0.5rem;">⚠️ Заполните имя, город и ответьте на все вопросы</div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // === КОНФИГУРАЦИЯ ===
+        const q2BlockMap = {
+            'q2-1': { label: 'Радость и лёгкость', textMap: { '1-1': '☀️ Солнечный свет', '1-2': '🎵 Музыка и танцы', '1-3': '🌸 Цветущий сад', '1-4': '🍭 Сладкие моменты' } },
+            'q2-2': { label: 'Уверенность и сила', textMap: { '2-1': '🌳 Корни и устойчивость', '2-2': '🔥 Внутренний огонь', '2-3': '🛡️ Защита и опора', '2-4': '⚡ Решительность' } },
+            'q2-3': { label: 'Нежность и романтика', textMap: { '3-1': '🌹 Лепестки роз', '3-2': '🍫 Шоколад и ваниль', '3-3': '🕯️ Свечи и уют', '3-4': '🌙 Лунный свет' } },
+            'q2-4': { label: 'Страсть и энергия', textMap: { '4-1': '🌶️ Острые специи', '4-2': '🧡 Яркие краски', '4-3': '🥇 Достижения и победы', '4-4': '💃 Движение и ритм' } },
+            'q2-5': { label: 'Спокойствие и гармония', textMap: { '5-1': '🌊 Шум волн', '5-2': '🌿 Лесная тишина', '5-3': '☯️ Баланс и покой', '5-4': '🧘 Медитация' } },
+            'q2-6': { label: 'Вдохновение и творчество', textMap: { '6-1': '🎨 Искусство и краски', '6-2': '🌌 Звёздное небо', '6-3': '📖 Книги и мечты', '6-4': '🌺 Экзотические ароматы' } },
+            'q2-7': { label: 'Защита и тепло', textMap: { '7-1': '🏠 Дом и семья', '7-2': '🤝 Дружба и поддержка', '7-3': '🧣 Уют и мягкость', '7-4': '☕ Тёплые напитки' } },
+            'q2-8': { label: 'Чистота и свежесть', textMap: { '8-1': '💧 Родниковая вода', '8-2': '🌬️ Утренний ветер', '8-3': '🍃 Зелёные листья', '8-4': '❄️ Свежесть снега' } },
+            'q2-9': { label: 'Глубина и мудрость', textMap: { '9-1': '🌌 Ночь и звёзды', '9-2': '📜 Древние знания', '9-3': '🌲 Старые леса', '9-4': '🔮 Тайны и загадки' } },
+            'q2-10': { label: 'Магия и тайна', textMap: { '10-1': '✨ Сказки и легенды', '10-2': '🌙 Ночные ритуалы', '10-3': '🪄 Необъяснимое', '10-4': '🌺 Редкие цветы' } }
+        };
+
+        const q4BlockMap = {
+            'q4-1': { label: 'Тревога и беспокойство', textMap: { '11-1': '📱 Информационный шум', '11-2': '⏰ Нехватка времени', '11-3': '😓 Ожидания других', '11-4': '🌪️ Неопределённость' } },
+            'q4-2': { label: 'Раздражение и гнев', textMap: { '12-1': '🔊 Громкие звуки', '12-2': '🚫 Несправедливость', '12-3': '😤 Неуважение', '12-4': '🌀 Хаос и беспорядок' } },
+            'q4-3': { label: 'Грусть и тоска', textMap: { '13-1': '🌧️ Пасмурная погода', '13-2': '🕯️ Одиночество', '13-3': '📺 Ностальгия', '13-4': '😔 Потеря близких' } },
+            'q4-4': { label: 'Усталость и апатия', textMap: { '14-1': '📉 Монотонность', '14-2': '😪 Недостаток сна', '14-3': '🔄 Рутина', '14-4': '🧠 Перегрузка' } },
+            'q4-5': { label: 'Стресс и напряжение', textMap: { '15-1': '💼 Работа и дедлайны', '15-2': '👥 Конфликты', '15-3': '🎯 Перфекционизм', '15-4': '📊 Избыток информации' } },
+            'q4-6': { label: 'Неуверенность и страх', textMap: { '16-1': '😟 Критика', '16-2': '🚧 Новые вызовы', '16-3': '🤔 Сравнение с другими', '16-4': '🌫️ Неизвестность' } },
+            'q4-7': { label: 'Холод и отстранённость', textMap: { '17-1': '❄️ Безразличие', '17-2': '🔒 Закрытость', '17-3': '🤖 Отсутствие эмоций', '17-4': '🚪 Одиночество' } },
+            'q4-8': { label: 'Путаница и хаос', textMap: { '18-1': '📚 Много задач', '18-2': '🗣️ Противоречия', '18-3': '📱 Информационный шум', '18-4': '🌀 Отсутствие плана' } },
+            'q4-9': { label: 'Несправедливость', textMap: { '19-1': '⚖️ Двойные стандарты', '19-2': '🙈 Игнорирование', '19-3': '😤 Обман', '19-4': '💔 Предательство' } },
+            'q4-10': { label: 'Душевная боль', textMap: { '20-1': '💔 Разрыв отношений', '20-2': '😢 Воспоминания', '20-3': '🕊️ Потеря', '20-4': '🌑 Одиночество' } }
+        };
+
+        const q1TextMap = {
+            '1': '💖 Радость и лёгкость',
+            '2': '🌿 Уверенность и силу',
+            '3': '🌸 Нежность и романтику',
+            '4': '🔥 Страсть и энергию',
+            '5': '☮️ Спокойствие и гармонию',
+            '6': '🌟 Вдохновение и творчество',
+            '7': '🤗 Защиту и тепло',
+            '8': '💎 Чистоту и свежесть',
+            '9': '🌙 Глубину и мудрость',
+            '10': '✨ Магию и тайну'
+        };
+
+        const q3TextMap = {
+            '11': '😰 Тревогу и беспокойство',
+            '12': '😤 Раздражение и гнев',
+            '13': '😔 Грусть и тоску',
+            '14': '🥱 Усталость и апатию',
+            '15': '😖 Стресс и напряжение',
+            '16': '😐 Неуверенность и страх',
+            '17': '🧊 Холод и отстранённость',
+            '18': '🌫️ Путаницу и хаос',
+            '19': '⚖️ Несправедливость',
+            '20': '💔 Душевную боль'
+        };
+
+        // DOM элементы
+        const userNameInput = document.getElementById('userName');
+        const userCityInput = document.getElementById('userCity');
+        const resultDisplay = document.getElementById('resultDisplay');
+        const saveTxtBtn = document.getElementById('saveTxtBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const saveError = document.getElementById('save-error');
+        const q2Container = document.getElementById('q2-container');
+        const q4Container = document.getElementById('q4-container');
+        const q2Box = document.getElementById('q2-box');
+        const q4Box = document.getElementById('q4-box');
+
+        // ОТДЕЛЬНЫЕ ХРАНИЛИЩА
+        let q2State = {
+            selectedBlocks: [],
+            values: {}
+        };
+
+        let q4State = {
+            selectedBlocks: [],
+            values: {}
+        };
+
+        function getSelectedCheckboxes(name) {
+            const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+            return Array.from(checkboxes);
+        }
+
+        function renderQ2Blocks() {
+            q2Container.innerHTML = '';
+            const q1Checked = getSelectedCheckboxes('q1');
+            
+            if (q1Checked.length === 0) {
+                q2Box.style.display = 'none';
+                q2State.selectedBlocks = [];
+                return;
+            }
+
+            q2Box.style.display = 'block';
+            const blockIds = q1Checked.map(el => el.dataset.next);
+            q2State.selectedBlocks = blockIds;
+
+            Object.keys(q2State.values).forEach(key => {
+                if (!blockIds.includes(key)) {
+                    delete q2State.values[key];
+                }
+            });
+
+            blockIds.forEach(blockId => {
+                if (q2BlockMap[blockId]) {
+                    const div = document.createElement('div');
+                    div.className = 'q2-group';
+                    div.id = `q2-group-${blockId}`;
+                    
+                    const title = document.createElement('div');
+                    title.className = 'q-text';
+                    title.innerHTML = `<span style="font-size:0.9rem;">${q2BlockMap[blockId].label}</span>`;
+                    div.appendChild(title);
+
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+                    
+                    const name = `q2-${blockId}`;
+                    const entries = Object.entries(q2BlockMap[blockId].textMap);
+                    entries.forEach(([value, text]) => {
+                        const label = document.createElement('label');
+                        const radio = document.createElement('input');
+                        radio.type = 'radio';
+                        radio.name = name;
+                        radio.value = value;
+                        radio.dataset.blockId = blockId;
+                        if (q2State.values[blockId] === value) {
+                            radio.checked = true;
+                        }
+                        label.appendChild(radio);
+                        label.append(` ${text}`);
+                        optionsDiv.appendChild(label);
+                    });
+
+                    div.appendChild(optionsDiv);
+                    q2Container.appendChild(div);
+
+                    optionsDiv.querySelectorAll('input[type="radio"]').forEach(r => {
+                        r.addEventListener('change', function(e) {
+                            if (this.checked) {
+                                const blockId = this.dataset.blockId;
+                                q2State.values[blockId] = this.value;
+                            }
+                            validateAll();
+                            renderResult();
+                            updateSaveButtons();
+                        });
+                    });
+                }
+            });
+        }
+
+        function renderQ4Blocks() {
+            q4Container.innerHTML = '';
+            const q3Checked = getSelectedCheckboxes('q3');
+            
+            if (q3Checked.length === 0) {
+                q4Box.style.display = 'none';
+                q4State.selectedBlocks = [];
+                return;
+            }
+
+            q4Box.style.display = 'block';
+            const blockIds = q3Checked.map(el => el.dataset.next);
+            q4State.selectedBlocks = blockIds;
+
+            Object.keys(q4State.values).forEach(key => {
+                if (!blockIds.includes(key)) {
+                    delete q4State.values[key];
+                }
+            });
+
+            blockIds.forEach(blockId => {
+                if (q4BlockMap[blockId]) {
+                    const div = document.createElement('div');
+                    div.className = 'q2-group';
+                    div.id = `q4-group-${blockId}`;
+                    
+                    const title = document.createElement('div');
+                    title.className = 'q-text';
+                    title.innerHTML = `<span style="font-size:0.9rem;">${q4BlockMap[blockId].label}</span>`;
+                    div.appendChild(title);
+
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+                    
+                    const name = `q4-${blockId}`;
+                    const entries = Object.entries(q4BlockMap[blockId].textMap);
+                    entries.forEach(([value, text]) => {
+                        const label = document.createElement('label');
+                        const radio = document.createElement('input');
+                        radio.type = 'radio';
+                        radio.name = name;
+                        radio.value = value;
+                        radio.dataset.blockId = blockId;
+                        if (q4State.values[blockId] === value) {
+                            radio.checked = true;
+                        }
+                        label.appendChild(radio);
+                        label.append(` ${text}`);
+                        optionsDiv.appendChild(label);
+                    });
+
+                    div.appendChild(optionsDiv);
+                    q4Container.appendChild(div);
+
+                    optionsDiv.querySelectorAll('input[type="radio"]').forEach(r => {
+                        r.addEventListener('change', function(e) {
+                            if (this.checked) {
+                                const blockId = this.dataset.blockId;
+                                q4State.values[blockId] = this.value;
+                            }
+                            validateAll();
+                            renderResult();
+                            updateSaveButtons();
+                        });
+                    });
+                }
+            });
+        }
+
+        function validateAll() {
+            let q2Valid = true;
+            if (q2State.selectedBlocks.length > 0) {
+                q2State.selectedBlocks.forEach(blockId => {
+                    if (!q2State.values[blockId]) {
+                        q2Valid = false;
+                    }
+                });
+            }
+            document.getElementById('q2-error').classList.toggle('show', !q2Valid && q2State.selectedBlocks.length > 0);
+
+            let q4Valid = true;
+            if (q4State.selectedBlocks.length > 0) {
+                q4State.selectedBlocks.forEach(blockId => {
+                    if (!q4State.values[blockId]) {
+                        q4Valid = false;
+                    }
+                });
+            }
+            document.getElementById('q4-error').classList.toggle('show', !q4Valid && q4State.selectedBlocks.length > 0);
+        }
+
+        function enforceMaxTwo(e) {
+            const name = e.target.name;
+            const checked = document.querySelectorAll(`input[name="${name}"]:checked`);
+            if (checked.length > 2) {
+                e.target.checked = false;
+                const errorId = name === 'q1' ? 'q1-error' : 'q3-error';
+                document.getElementById(errorId).classList.add('show');
+                setTimeout(() => {
+                    document.getElementById(errorId).classList.remove('show');
+                }, 2500);
+            } else {
+                const errorId = name === 'q1' ? 'q1-error' : 'q3-error';
+                document.getElementById(errorId).classList.remove('show');
+            }
+            
+            if (name === 'q1') {
+                q2State.values = {};
+                renderQ2Blocks();
+            } else if (name === 'q3') {
+                q4State.values = {};
+                renderQ4Blocks();
+            }
+            
+            validateAll();
+            renderResult();
+            updateSaveButtons();
+        }
+
+        function getResultData() {
+            const entries = [];
+            const name = userNameInput.value.trim() || 'Не указано';
+            const city = userCityInput.value.trim() || 'Не указан';
+            entries.push({ label: 'Имя', text: name });
+            entries.push({ label: 'Город', text: city });
+
+            const q1Checked = getSelectedCheckboxes('q1');
+            if (q1Checked.length > 0) {
+                const texts = q1Checked.map(el => q1TextMap[el.value] || el.value);
+                entries.push({ label: 'Вопрос 1 (хочу больше)', text: texts.join('; ') });
+            }
+
+            if (q2State.selectedBlocks.length > 0) {
+                const q2Texts = [];
+                q2State.selectedBlocks.forEach(blockId => {
+                    const val = q2State.values[blockId];
+                    if (val && q2BlockMap[blockId]) {
+                        q2Texts.push(q2BlockMap[blockId].textMap[val] || val);
+                    }
+                });
+                if (q2Texts.length > 0) {
+                    entries.push({ label: 'Вопрос 2 (уточнение вопроса 1)', text: q2Texts.join('; ') });
+                }
+            }
+
+            const q3Checked = getSelectedCheckboxes('q3');
+            if (q3Checked.length > 0) {
+                const texts = q3Checked.map(el => q3TextMap[el.value] || el.value);
+                entries.push({ label: 'Вопрос 3 (хочу меньше)', text: texts.join('; ') });
+            }
+
+            if (q4State.selectedBlocks.length > 0) {
+                const q4Texts = [];
+                q4State.selectedBlocks.forEach(blockId => {
+                    const val = q4State.values[blockId];
+                    if (val && q4BlockMap[blockId]) {
+                        q4Texts.push(q4BlockMap[blockId].textMap[val] || val);
+                    }
+                });
+                if (q4Texts.length > 0) {
+                    entries.push({ label: 'Вопрос 4 (уточнение вопроса 3)', text: q4Texts.join('; ') });
+                }
+            }
+
+            return entries;
+        }
+
+        function renderResult() {
+            const entries = getResultData();
+
+            if (entries.length <= 2) {
+                resultDisplay.innerHTML = `<div class="empty-message"><span>🌸</span> Ответь на все вопросы, чтобы увидеть результат.</div>`;
+                return;
+            }
+
+            let html = '';
+            entries.forEach(item => {
+                html += `<div class="answer-line"><strong>${item.label}:</strong> <span class="ans-value">${item.text}</span></div>`;
+            });
+            resultDisplay.innerHTML = html;
+        }
+
+        function isAllAnswered() {
+            const name = userNameInput.value.trim();
+            const city = userCityInput.value.trim();
+            if (!name || !city) return false;
+
+            const q1Checked = getSelectedCheckboxes('q1');
+            if (q1Checked.length === 0) return false;
+
+            const q3Checked = getSelectedCheckboxes('q3');
+            if (q3Checked.length === 0) return false;
+
+            if (q2State.selectedBlocks.length > 0) {
+                for (const blockId of q2State.selectedBlocks) {
+                    if (!q2State.values[blockId]) return false;
+                }
+            }
+
+            if (q4State.selectedBlocks.length > 0) {
+                for (const blockId of q4State.selectedBlocks) {
+                    if (!q4State.values[blockId]) return false;
+                }
+            }
+
+            return true;
+        }
+
+        function updateSaveButtons() {
+            const allAnswered = isAllAnswered();
+            saveTxtBtn.disabled = !allAnswered;
+            saveError.classList.toggle('show', !allAnswered);
+        }
+
+        function getTxtContent() {
+            const entries = getResultData();
+            const lines = [];
+            lines.push('🌸🌸🌸 АРОМА ТЕСТ — ДИАГНОСТИКА ДЛЯ ДУХОВ 🌸🌸🌸');
+            lines.push(`📅 Дата: ${new Date().toLocaleString()}`);
+            lines.push('');
+            lines.push('🌿 Результаты диагностики:');
+            lines.push('');
+            
+            entries.forEach((item, idx) => {
+                if (idx < 2) {
+                    lines.push(`${item.label}: ${item.text}`);
+                } else {
+                    lines.push(`${idx-1}. ${item.label}: ${item.text}`);
+                }
+            });
+            
+            lines.push('');
+            lines.push('🌸 Благодарим за участие!');
+            lines.push('✨ Твой индивидуальный аромат ждёт тебя.');
+            return lines.join('\n');
+        }
+
+        function downloadTxt() {
+            if (!isAllAnswered()) {
+                saveError.classList.add('show');
+                return;
+            }
+            const content = getTxtContent();
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `арома_тест_${userNameInput.value.trim() || 'участник'}_${new Date().toISOString().slice(0,10)}.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        function handleChange(e) {
+            const target = e.target;
+            if (target.type === 'checkbox' && (target.name === 'q1' || target.name === 'q3')) {
+                enforceMaxTwo(e);
+                return;
+            }
+            if (target.type === 'text') {
+                renderResult();
+                updateSaveButtons();
+                return;
+            }
+        }
+
+        function resetAll() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(r => r.checked = false);
+            document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+            userNameInput.value = '';
+            userCityInput.value = '';
+            q2State.values = {};
+            q2State.selectedBlocks = [];
+            q4State.values = {};
+            q4State.selectedBlocks = [];
+            q2Container.innerHTML = '';
+            q4Container.innerHTML = '';
+            q2Box.style.display = 'none';
+            q4Box.style.display = 'none';
+            renderResult();
+            updateSaveButtons();
+            document.getElementById('q1-error').classList.remove('show');
+            document.getElementById('q3-error').classList.remove('show');
+            document.getElementById('q2-error').classList.remove('show');
+            document.getElementById('q4-error').classList.remove('show');
+            saveError.classList.remove('show');
+        }
+
+        function init() {
+            document.querySelectorAll('input').forEach(el => {
+                el.addEventListener('change', handleChange);
+                el.addEventListener('input', handleChange);
+            });
+
+            q2Box.style.display = 'none';
+            q4Box.style.display = 'none';
+            renderResult();
+            updateSaveButtons();
+
+            resetBtn.addEventListener('click', resetAll);
+            saveTxtBtn.addEventListener('click', downloadTxt);
+
+            renderQ2Blocks();
+            renderQ4Blocks();
+            validateAll();
+        }
+
+        init();
+    })();
+</script>
 </body>
 </html>
