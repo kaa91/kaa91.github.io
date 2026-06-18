@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Арома тест — диагностика для духов</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -39,6 +40,17 @@
             gap: 14px;
             margin-bottom: 0.2rem;
             font-family: 'Playfair Display', serif;
+        }
+        h1 .flower-icon {
+            font-size: 2.8rem;
+            line-height: 1;
+            display: inline-block;
+            filter: drop-shadow(0 2px 4px rgba(200, 100, 120, 0.2));
+            flex-shrink: 0;
+            -webkit-text-fill-color: initial;
+            color: #b34a6e;
+        }
+        h1 .title-text {
             background: linear-gradient(135deg, #b34a6e, #d47b9b, #e89ab0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -57,6 +69,7 @@
             padding: 0.2rem 1.2rem;
             border-radius: 40px;
             border: 1px solid #ffd6cc;
+            flex-shrink: 0;
         }
         .subhead {
             color: #7a4d5e;
@@ -345,9 +358,15 @@
             border-color: #c06586;
             box-shadow: 0 6px 20px rgba(212, 123, 155, 0.35);
         }
-        .flower-icon {
-            display: inline-block;
-            filter: drop-shadow(0 2px 4px rgba(200, 100, 120, 0.2));
+        .btn-pdf {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border-color: #e74c3c;
+            color: white;
+        }
+        .btn-pdf:hover:not(:disabled) {
+            background: linear-gradient(135deg, #c0392b, #a93226);
+            border-color: #c0392b;
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.35);
         }
         .error-msg {
             color: #c0395a;
@@ -400,7 +419,8 @@
 <body>
 <div class="card" id="app">
     <h1>
-        <span class="flower-icon">🌸</span> Арома тест
+        <span class="flower-icon">🌸</span>
+        <span class="title-text">Арома тест</span>
         <small>диагностика для духов</small>
     </h1>
     <div class="subhead">
@@ -499,6 +519,7 @@
         <div class="action-buttons">
             <button class="btn" id="resetBtn">⟳ Сбросить</button>
             <button class="btn btn-success" id="saveTxtBtn" disabled>💾 Сохранить в TXT</button>
+            <button class="btn btn-pdf" id="savePdfBtn" disabled>📄 Сохранить в PDF</button>
         </div>
         <div class="error-msg" id="save-error" style="margin-top: 0.5rem;">⚠️ Заполните имя, город и ответьте на все вопросы</div>
     </div>
@@ -564,6 +585,7 @@
         const userCityInput = document.getElementById('userCity');
         const resultDisplay = document.getElementById('resultDisplay');
         const saveTxtBtn = document.getElementById('saveTxtBtn');
+        const savePdfBtn = document.getElementById('savePdfBtn');
         const resetBtn = document.getElementById('resetBtn');
         const saveError = document.getElementById('save-error');
         const q2Container = document.getElementById('q2-container');
@@ -867,6 +889,7 @@
         function updateSaveButtons() {
             const allAnswered = isAllAnswered();
             saveTxtBtn.disabled = !allAnswered;
+            savePdfBtn.disabled = !allAnswered;
             saveError.classList.toggle('show', !allAnswered);
         }
 
@@ -908,6 +931,78 @@
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
+        }
+
+        function downloadPdf() {
+            if (!isAllAnswered()) {
+                saveError.classList.add('show');
+                return;
+            }
+
+            const entries = getResultData();
+            
+            // Формируем HTML-строку для PDF
+            let resultHtml = '';
+            entries.forEach(item => {
+                const label = item.label.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const text = item.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                resultHtml += `
+                    <div style="padding: 10px 0; border-bottom: 1px solid #f0e8e5; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;">
+                        <strong style="min-width: 200px; color: #6b2e4a; font-size: 16px; font-weight: 600;">${label}:</strong>
+                        <span style="background: #f8f0ed; padding: 3px 18px; border-radius: 30px; color: #8f4a64; border: 1px solid #f0d5ce; font-size: 15px; display: inline-block;">${text}</span>
+                    </div>
+                `;
+            });
+
+            const fullHtml = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { font-family: 'Segoe UI', 'Playfair Display', serif; margin: 0; padding: 40px 45px; background: #ffffff; color: #1a1a1a; }
+                        .pdf-title { text-align: center; margin-bottom: 28px; }
+                        .pdf-title h1 { font-size: 32px; color: #b34a6e; font-weight: 600; margin-bottom: 4px; font-family: 'Playfair Display', serif; }
+                        .pdf-title p { color: #7a4d5e; font-size: 18px; font-weight: 300; margin: 0; }
+                        .pdf-divider { border: none; border-top: 2px solid #f0d5ce; margin: 18px 0 24px 0; }
+                        .pdf-footer { margin-top: 40px; text-align: center; color: #b07a8a; font-size: 14px; border-top: 1px solid #f0d5ce; padding-top: 20px; }
+                        .pdf-footer p { margin: 2px 0; }
+                        .pdf-footer .small { font-size: 12px; margin-top: 6px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="pdf-title">
+                        <h1>🌸 Арома тест</h1>
+                        <p>Диагностика для индивидуальных духов</p>
+                        <hr class="pdf-divider">
+                    </div>
+                    <div>
+                        ${resultHtml}
+                    </div>
+                    <div class="pdf-footer">
+                        <p>✨ Твой индивидуальный аромат ждёт тебя.</p>
+                        <p class="small">Создано с любовью ❤️</p>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const tempDiv = document.createElement('div');
+            tempDiv.style.cssText = 'position: absolute; left: -9999px; top: 0; width: 800px; background: white; padding: 20px;';
+            tempDiv.innerHTML = fullHtml;
+            document.body.appendChild(tempDiv);
+
+            const opt = {
+                margin:        [10, 10, 10, 10],
+                filename:      `арома_тест_${userNameInput.value.trim() || 'участник'}_${new Date().toISOString().slice(0,10)}.pdf`,
+                image:         { type: 'jpeg', quality: 0.98 },
+                html2canvas:   { scale: 2, letterRendering: true, useCORS: true, logging: false },
+                jsPDF:         { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(tempDiv).save().then(() => {
+                document.body.removeChild(tempDiv);
+            });
         }
 
         function handleChange(e) {
@@ -958,6 +1053,7 @@
 
             resetBtn.addEventListener('click', resetAll);
             saveTxtBtn.addEventListener('click', downloadTxt);
+            savePdfBtn.addEventListener('click', downloadPdf);
 
             renderQ2Blocks();
             renderQ4Blocks();
